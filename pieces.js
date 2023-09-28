@@ -4,6 +4,8 @@ const pieces = await fetch("pieces-autos.json").then(pieces => pieces.json());
 // Fonction qui génère toute la page web
 function genererPieces(pieces){
     for (let i = 0; i<pieces.length; i++){
+        // Recupération de l'élément du DOM qui accueillera les fiches
+        const sectionFiches = document.querySelector('.fiches');
         // Création d'une balise dédiéee à une pièce auto
         const pieceElement = document.createElement("article");
         // On crée maintenant l'élément img
@@ -15,15 +17,62 @@ function genererPieces(pieces){
         // On repète la meme chose pour le nom, prix, categorie, ...
         
         const nomElement = document.createElement('h2');
-        nomElement.innerText = article.nom;
+        nomElement.innerHTML = pieces[i].nom;
+        pieceElement.appendChild(nomElement);
         const prixElement = document.createElement ('p');
-        prixElement.innerText = `Prix : ${article.prix} FCFA ${article.prix < 4000 ? "" : "( ~ Remise possible)"}`;
+        prixElement.innerHTML = `Prix : ${pieces[i].prix} FCFA ${pieces[i].prix < 4000 ? "" : "( ~ Remise possible)"}`;
+        pieceElement.appendChild(prixElement);
         const categorieEelement = document.createElement('p');
         // Pour les produits n'ayant pas de catégorie, nous utilisons l'opérateur "nullis" ~ ?? pour le notifier : 
-        categorieEelement.innerText = article.categorie ?? "(Auncune catégorie)";
+        categorieEelement.innerHTML = pieces[i].categorie ?? "(Auncune catégorie)";
+        pieceElement.appendChild(categorieEelement);
         const descriptionElement = document.createElement('p');
-        descriptionElement.innerText = article.description ?? "(Pas de description pour le moment !)";
+        descriptionElement.innerHTML = pieces[i].description ?? "(Pas de description pour le moment !)";
+        pieceElement.appendChild(descriptionElement);
         const disponibiliteElement = document.createElement('p');
-        disponibiliteElement.innerText = article.disponibilite ? "En stock" : "Indisponible";
+        disponibiliteElement.innerHTML = pieces[i].disponibilite ? "En stock" : "Indisponible";
+        pieceElement.appendChild(disponibiliteElement);
+
+        // On Rattache la balise article au body
+        document.body.appendChild(pieceElement);
+        // On ratache maintenant la balise article à sectiction fiche ou classe fiches
+        sectionFiches.appendChild(pieceElement);
+
     }
 }
+
+// Premier affichage de la page
+genererPieces(pieces);
+
+// Ajout du listener pour trier les pièces par ordre de prix croissant
+const boutonTrier = document.querySelector('.btn-trier');
+boutonTrier.addEventListener('click', function (){
+    const piecesOrdonnees = Array.from(pieces);
+    piecesOrdonnees.sort(function (a, b){
+        return a.prix - b.prix;
+    });
+    // Effacement de l'écran et regénération de la page
+    document.querySelector('.fiches').innerHTML = "";
+    genererPieces(piecesOrdonnees);
+});
+
+// Ajout du listener pour filtrer les pièces non abordables
+const boutonFiltrer = document.querySelector('.btn-filtrer');
+boutonFiltrer.addEventListener('click', function(){
+    const piecesFiltrees = pieces.filter(function (piece) {
+        return piece.prix <= 4000;
+    });
+    // Effacement de l'écran et regénération de la page avec les pièces filtrées uniquement
+    document.querySelector('.fiches').innerHTML = "";
+    genererPieces(piecesFiltrees);
+});
+
+// Filtrage par prix max (input range)
+const inputPrixmax = document.querySelector('#prix-max');
+inputPrixmax.addEventListener('input', function (){
+    const piecesFiltrees = pieces.filter(function(piece){
+        return piece.prix <= inputPrixmax.value;
+    });
+    document.querySelector('.fiches').innerHTML = '';
+    genererPieces(piecesFiltrees);
+})
