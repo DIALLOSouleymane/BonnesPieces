@@ -76,3 +76,64 @@ inputPrixmax.addEventListener('input', function (){
     document.querySelector('.fiches').innerHTML = '';
     genererPieces(piecesFiltrees);
 })
+
+// Highlight pieces
+const noms = pieces.map(piece => piece.nom);
+// Nous retirons les noms des pièces non abordables
+for (let i = pieces.length -1; i>=0; i--){
+    if (pieces[i].prix > 4000){
+        noms.splice(i, 1);
+    }
+}
+// Création de la liste au DOM
+const abordablesElements = document.createElement('ul');
+// Ajout de chaque nom à la liste
+for (let i=0; i<noms.length; i++){
+    const nomElement = document.createElement('li');
+    nomElement.innerHTML = noms[i];
+    abordablesElements.appendChild(nomElement);
+}
+// Ajout de l'en-tete puis de la liste au bloc résultats filtres
+document.querySelector('.abordables').appendChild(abordablesElements);
+
+
+// Pièces disponibles
+const piecesDisponibles = pieces.map(piece => `${piece.nom} - ${piece.prix} FCFA`);
+// Nous retirons maintenant les pièces non disponibles
+for (let i = pieces.length - 1; i>=0; i--){
+    if (!(pieces[i].disponibilite)){
+        // Si la piece n'est pas disponible, on la retire
+        piecesDisponibles.splice(i,1);
+    }
+}
+// Création de la liste au DOM
+const disponiblesElements = document.createElement('ul');
+// Ajout des pièces à la liste
+for (let i=0; i<piecesDisponibles.length; i++){
+    const pieceDisponible = document.createElement('li');
+    pieceDisponible.innerHTML = piecesDisponibles[i];
+    disponiblesElements.appendChild(pieceDisponible);
+}
+// Ajout de l'en-tete puis de la liste au bloc résultats filtres
+document.querySelector('.disponibles').appendChild(disponiblesElements); 
+
+// Pièces ayant une description
+const btnDescription = document.querySelector('.btn-description');
+btnDescription.addEventListener('click', function(){
+    const piecesDecrites = pieces.filter(function(piece){
+        return piece.description;
+    });
+    document.querySelector('.fiches').innerHTML = '';
+    genererPieces(piecesDecrites);
+});
+
+// Tri par prix décroissant
+const btnPrixDecroissant = document.querySelector('.btn-prixDecroissant');
+btnPrixDecroissant.addEventListener('click', function(){
+    const prixFiltrees = Array.from(pieces);
+    prixFiltrees.sort(function(a,b){
+        return b.prix - a.prix;
+    });
+    document.querySelector('.fiches').innerHTML = '';
+    genererPieces(prixFiltrees);
+});
