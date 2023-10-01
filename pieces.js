@@ -3,8 +3,22 @@ import { ajoutListenerAvis, ajoutListenerEnvoyerAvis } from "./avis.js";
 // const pieces = await fetch("pieces-autos.json").then(pieces => pieces.json());
 // Remplacement du fichier coder en dure par l'API
 // const pieces = await fetch("http://localhost:8081/pieces/").then(pieces => pieces.json());
-const reponse = await fetch("http://localhost:8081/pieces/");
-const pieces = await reponse.json();
+
+// *Utilisation du local Storage du navigateur
+// Récupération des pièces eventuellement stockées dans le localStorage
+let pieces = window.localStorage.getItem('pieces');
+if (pieces === null){
+    // Récupération des pièces depuis l'API
+    const reponse = await fetch("http://localhost:8081/pieces/");
+    pieces = await reponse.json();
+    // Transformation des pièces en JSON
+    const valeurPieces = JSON.stringify(pieces);
+    // Stockages des informations dans le localStorage
+    window.localStorage.setItem("pieces", valeurPieces);
+}else{
+    pieces = JSON.parse(pieces);
+}
+
 
 // Transformation des pièces en JSON pour le localStorage
 const valeurPieces = JSON.stringify(pieces);
@@ -163,3 +177,9 @@ btnPrixDecroissant.addEventListener('click', function(){
     document.querySelector('.fiches').innerHTML = '';
     genererPieces(prixFiltrees);
 });
+
+// Ajout du listener pour mettre à jour des données du localStorage
+const boutonMiseAJour = document.querySelector('.btn-maj');
+boutonMiseAJour.addEventListener('click', function() {
+    window.localStorage.removeItem('pieces');
+})
