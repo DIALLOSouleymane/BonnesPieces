@@ -22,6 +22,19 @@
 				<!-- <button class="btn-nomsPieces">Afficher la liste des nom des pièces</button> -->
 				<p><strong>Prix maximum :</strong> </p>
 				<input type="range" name="prix-max" id="prix-max" min="0" max="8000" step="500">
+				<!-- Gestion des avis -->
+				<h3>Ajoutez un avis</h3>
+				<form action="" class="formulaire-avis">
+					<b>Identifiant de la pièce : </b><br>
+					<input type="number" name="piece-id" id=""><br>
+					<b>Nom utilisateur : </b><br>
+					<input type="text" name="utilisateur"><br>
+					<b>Avis : </b><br>
+					<input type="text" name="commentaire"><br>
+					<b>Nombre d'étoiles : </b><br>
+					<input type="number" name="nbEtoiles" min="0" max="5"><br>
+					<button>Envoyer</button>
+				</form>
 			</section>
 
 			<!-- Fiches produits -->

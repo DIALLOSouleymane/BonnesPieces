@@ -1,6 +1,19 @@
-import { ajoutListenerAvis } from "./avis.js";
+import { ajoutListenerAvis, ajoutListenerEnvoyerAvis } from "./avis.js";
 // Récupération des pièces depuis le fichier JSON
-const pieces = await fetch("pieces-autos.json").then(pieces => pieces.json());
+// const pieces = await fetch("pieces-autos.json").then(pieces => pieces.json());
+// Remplacement du fichier coder en dure par l'API
+// const pieces = await fetch("http://localhost:8081/pieces/").then(pieces => pieces.json());
+const reponse = await fetch("http://localhost:8081/pieces/");
+const pieces = await reponse.json();
+
+// Transformation des pièces en JSON pour le localStorage
+const valeurPieces = JSON.stringify(pieces);
+
+// Stockage des informations dans le localStorage
+window.localStorage.setItem("pieces", valeurPieces);
+
+// Appel de la fonction ajoutListenerEnvoyerAvis pour l'ajout du listener au formulaire (ecoute du formulaire)
+ajoutListenerEnvoyerAvis()
 
 // Fonction qui génère toute la page web
 function genererPieces(pieces){
@@ -51,6 +64,7 @@ function genererPieces(pieces){
     }
     // Ajout de la fonction ajoutListennerAvis
     ajoutListenerAvis();
+
 }
 
 // Premier affichage de la page
