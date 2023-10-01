@@ -1,3 +1,4 @@
+import { ajoutListenerAvis } from "./avis.js";
 // Récupération des pièces depuis le fichier JSON
 const pieces = await fetch("pieces-autos.json").then(pieces => pieces.json());
 
@@ -33,12 +34,23 @@ function genererPieces(pieces){
         disponibiliteElement.innerHTML = pieces[i].disponibilite ? "En stock" : "Indisponible";
         pieceElement.appendChild(disponibiliteElement);
 
+        // Code ajouté
+        const avisBouton = document.createElement('button');
+        // avisBouton.dataset.id = article.id;
+        avisBouton.dataset.id = pieces[i].id;
+        avisBouton.textContent = "Afficher les avis";
+
         // On Rattache la balise article au body
         document.body.appendChild(pieceElement);
         // On ratache maintenant la balise article à sectiction fiche ou classe fiches
         sectionFiches.appendChild(pieceElement);
 
+        // Code ajouté
+        pieceElement.appendChild(avisBouton);
+
     }
+    // Ajout de la fonction ajoutListennerAvis
+    ajoutListenerAvis();
 }
 
 // Premier affichage de la page
