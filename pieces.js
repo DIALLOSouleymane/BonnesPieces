@@ -1,4 +1,4 @@
-import { ajoutListenerAvis, ajoutListenerEnvoyerAvis } from "./avis.js";
+import { ajoutListenerAvis, ajoutListenerEnvoyerAvis, afficherGraphiqueAvis } from "./avis.js";
 // Récupération des pièces depuis le fichier JSON
 // const pieces = await fetch("pieces-autos.json").then(pieces => pieces.json());
 // Remplacement du fichier coder en dure par l'API
@@ -189,3 +189,5 @@ const boutonMiseAJour = document.querySelector('.btn-maj');
 boutonMiseAJour.addEventListener('click', function() {
     window.localStorage.removeItem('pieces');
 })
+
+await afficherGraphiqueAvis();
