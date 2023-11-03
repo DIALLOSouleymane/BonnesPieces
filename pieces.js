@@ -9,7 +9,13 @@ import { ajoutListenerAvis, ajoutListenerEnvoyerAvis } from "./avis.js";
 let pieces = window.localStorage.getItem('pieces');
 if (pieces === null){
     // Récupération des pièces depuis l'API
-    const reponse = await fetch("http://localhost:8081/pieces/");
+    // const reponse = await fetch("http://localhost:8081/pieces/");
+
+    /* 
+        Utilisons maintenant le lien de notre api mis en ligne sur render : 
+        https://api-http-bonnespieces.onrender.com/
+    */
+    const reponse = await fetch("https://api-http-bonnespieces.onrender.com/pieces/");
     pieces = await reponse.json();
     // Transformation des pièces en JSON
     const valeurPieces = JSON.stringify(pieces);

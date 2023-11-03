@@ -15,7 +15,12 @@ export function ajoutListenerEnvoyerAvis() {
         const chargeUtile = JSON.stringify(avis);
 
         // Appel de la fonction fetch avec toutes les informations nécessaires
-        fetch("http://localhost:8081/avis", {
+        /* 
+            Utilisons maintenant le lien de notre api mis en ligne sur render : 
+            https://api-http-bonnespieces.onrender.com/
+        */
+        // fetch("http://localhost:8081/avis", {
+        fetch("https://api-http-bonnespieces.onrender.com/avis", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: chargeUtile
@@ -31,7 +36,7 @@ export function ajoutListenerAvis(){
             const id = event.target.dataset.id;
             // fetch(`http://localhost:8081/pieces/${id}/avis`);
             // modification de la requete
-            const reponse = await fetch("http://localhost:8081/pieces/" + id + "/avis");
+            const reponse = await fetch("https://api-http-bonnespieces.onrender.com/pieces/" + id + "/avis");
             // reconstruction des donnees
             const avis = await reponse.json();
 
